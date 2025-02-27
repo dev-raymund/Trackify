@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <link rel="stylesheet" href="css/global.css">
+        <link rel="stylesheet" href="css/styles.css">
+
+        <title>Trackify</title>
+
+        <!-- Intro.js CSS -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intro.js/7.2.0/introjs.min.css">
+    </head>
+    <body class="relative flex col">
+
+        <button id="startTour">Start Tour</button>
+
+        <div id="snackbar" class="hide" style="width: -moz-available;">
+
+        </div>
+        
+        <div id="main" class="flex col overflow-y-scroll mb-20">
+            <div id="logo-wrapper" class="logo-wrapper w-100">
+                <div class="container">
+                    <div class="flex jc-center pt-20 pb-20">
+                        <a href="/">
+                            <img src="assets/trackify-logo.png" alt="Logo" class="logo w-100" />
+                        </a>
+                    </div>
+                </div>
+            </div>
+        
+            <div id="auth-wrapper" class="tab-wrapper">
+                <div id="register" class="panel overflow-y-scroll">
+                    <div class="container">
+                        <form id="registerForm" class="flex col">
+                            <div class="flex col mb-20">
+                                <label>First Name</label>
+                                <input type="text" id="firstname" placeholder="John" required>
+                            </div>
+                            <div class="flex col mb-20">
+                                <label>Last Name</label>
+                                <input type="text" id="lastname" placeholder="Doe" required>
+                            </div>
+                            <div class="flex col mb-20">
+                                <label>Email</label>
+                                <input type="email" id="register_email" placeholder="name@mail.com" required>
+                                <span id="register_email_validation" class="validation-msg mt-10" style="color: red;"></span>
+                            </div>
+                            <div class="flex col mb-20 relative">
+                                <label>Password</label>
+                                <input type="password" id="register_password" data-validation-target="register_password_validation_list" placeholder="*****" required>
+                                <span class="toggle-password absolute">
+                                    <svg class="eye-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M1 12S5 4 12 4s11 8 11 8-4 8-11 8S1 12 1 12Z"/>
+                                        <circle cx="12" cy="12" r="3"/>
+                                    </svg>
+                                </span>
+                                <ul id="register_password_validation_list" class="validation-msg mt-10"></ul>
+                            </div>
+                            <div class="flex  gap-20">
+                                <button class="btn primary w-100" type="submit">Register</button>
+                            </div>
+                        </form>
+                        <div class="link-wrapper flex jc-center mt-20 mb-20">
+                            <div class="flex  gap-20">
+                                <button class="link w-100" onclick="openPanel(event, 'login')" id="defaultOpenAuth">Login</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        
+                <div id="login" class="panel overflow-y-scroll">
+                    <div class="container">
+                        <form id="loginForm" class="flex col">
+                            <div class="flex col mb-20">
+                                <label>Email</label>
+                                <input type="email" id="login_email" placeholder="name@mail.com" required>
+                                <span id="login_email_validation" class="validation-msg mt-5" style="color: red;"></span>
+                            </div>
+                            <div class="flex col mb-20 relative">
+                                <label>Password</label>
+                                <input type="password" id="login_password" data-validation-target="login_password_validation_list" placeholder="*****" required>
+                                <span class="toggle-password absolute">
+                                    <svg class="eye-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M1 12S5 4 12 4s11 8 11 8-4 8-11 8S1 12 1 12Z"/>
+                                        <circle cx="12" cy="12" r="3"/>
+                                    </svg>
+                                </span>
+                                <span id="login_password_validation" class="validation-msg mt-5" style="color: red;"></span>
+                            </div>
+                            <div class="flex gap-10 w-100 jc-end mb-20">
+                                <button class="link" onclick ="showForgotPassword()">Forgot Password?</button>
+                            </div>
+                            <div class="flex">
+                                <button class="btn primary w-100" type="submit">Login</button>
+                            </div>
+                        </form>
+                        <div class="link-wrapper flex jc-center mt-20 mb-20">
+                            <div class="flex  gap-20">
+                                <button class="link w-100" onclick="openPanel(event, 'register')">Register</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Forgot Password -->
+                <div id="forgotPassword" class="panel">
+                    <div class="container">
+                        <div class="flex col mb-10">
+                            <label>Forgot Password</label>
+                            <input type="email" id="forgot_email" placeholder="Enter your email">
+                        </div>
+                        <div class="flex gap-10 w-100 jc-end">
+                            <button class="btn primary" onclick="sendOTP()">Send OTP</button>
+                            <button class="btn cancel" onclick ="hideForgotPassword()">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- OTP Verification -->
+                <div id="otpPanel" class="panel">
+                    <div class="container">
+                        <div class="flex col mb-10">
+                            <label>Verify OTP</label>
+                            <input type="text" id="otp_code" placeholder="Enter OTP">
+                        </div>
+
+                        <div class="flex col mb-20 relative">
+                            <label>Reset Password</label>
+                            <input type="password" id="new_password" placeholder="Enter new password">
+                            <span class="toggle-password absolute">
+                                <svg class="eye-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M1 12S5 4 12 4s11 8 11 8-4 8-11 8S1 12 1 12Z"/>
+                                    <circle cx="12" cy="12" r="3"/>
+                                </svg>
+                            </span>
+                        </div>
+                        
+                        <div class="flex gap-10 w-100 jc-end">
+                            <button class="btn primary" onclick="verifyOTP()">Reset Password</button>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+
+            </div>
+        
+            <div id="transction-wrapper" class="content-wrapper pt-30 h-100">
+
+                <div id="home" class="panel relative overflow-y-scroll">
+
+                    <button id="dark-mode-toggle" class="btn primary p-5 flex gap-5 ai-center br-rounded-full absolute z-1">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2V4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M12 20V22" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M4.93 4.93L6.34 6.34" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M17.66 17.66L19.07 19.07" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M2 12H4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M20 12H22" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M4.93 19.07L6.34 17.66" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M17.66 6.34L19.07 4.93" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            <circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                    </button>
+
+                    <button id="logout-btn" class="btn primary p-5 flex gap-5 ai-center br-rounded-full absolute" onclick="logout()" style="display: none;">
+                        Logout
+                    </button>
+                    
+                    <div class="container">
+        
+                        <div class="flex col mb-20">
+                            <label class="title">Trackify</label>
+                        </div>
+
+                        <div id="profile-box" class="box mb-20 br-rounded-lg p-20">
+
+                            <div class="flex col mb-20">
+                                <label>Profile</label>
+                            </div>
+    
+                            <div class="wrapper">
+                                <div id="profile-wrapper" class="flex col mb-20">
+                                    
+                                </div>
+                            </div>
+                            
+                        </div>
+
+
+                        <div class="flex gap-10 jc-space-between mb-20">
+                            <div class="dashboard-total-income box w-40 br-rounded-lg p-20">
+                                <label>Total Income</label>
+                                <h4 id="dashboard-total-income" class="green"></h4>
+                            </div>
+
+                            <div class="dashboard-total-expenses box w-40 br-rounded-lg p-20">
+                                <label>Total Expenses</label>
+                                <h4 id="dashboard-total-expenses" class="red"></h4>
+                            </div>
+                        </div>
+
+                        <div class="admin flex jc-space-between ai-center mb-10">
+                            <button id="all-users-btn" class="btn primary p-5 flex gap-5 ai-center br-rounded-full" onclick="openPanel(event, 'all-users')">
+                                <svg 
+                                    xmlns="http://www.w3.org/2000/svg" 
+                                    viewBox="0 0 24 24" 
+                                    width="15" 
+                                    height="15" 
+                                    fill="currentColor">
+                                    <path d="M16 11c1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3 1.34 3 3 3zm-8 0c1.66 0 3-1.34 3-3S9.66 5 8 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 2.06 1.97 3.45v2h6v-2c0-2.66-5.33-4-8-4z"/>
+                                </svg>
+                                <span>All Users</span>
+                            </button> 
+                        </div>
+
+                        <div class="flex jc-space-between ai-center mb-10">
+                            <button id="add-activity" class="btn primary p-5 flex gap-5 ai-center br-rounded-full" onclick="openPanel(event, 'activity')">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2">
+                                    <line x1="12" y1="5" x2="12" y2="19" stroke-linecap="round" />
+                                    <line x1="5" y1="12" x2="19" y2="12" stroke-linecap="round" />
+                                </svg>
+                                <span>Add Activity</span>
+                            </button> 
+                        </div>
+
+                        <div class="flex jc-space-between ai-center mb-10">
+                            <label class="title">Recent Activity</label>
+                        </div>
+
+                        <div class="recent-wrapper flex">
+                            <div id="recent-list" class="flex gap-5 wrap w-100"></div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div id="reports" class="panel">
+
+                    <button class="prev link absolute br-rounded-full z-2" onclick="openPanel(event, 'activity')">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M15 18l-6-6 6-6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+
+                    <div class="container">
+        
+                        <div class="flex col mb-20">
+                            <label class="title">Reports</label>
+                        </div>
+
+                        <div class="overflow-y-scroll">
+
+                            <div id="weekly-report">
+                                <div class="flex jc-space-between ai-center mb-10">
+                                    <label class="title">Weekly (<span id="current-week"></span>)</label>
+                                </div>
+
+                                <div class="report-wrapper flex col gap-5 mb-20">
+                                    <div class="reports-total-income box mb-10 br-rounded-lg p-10">
+                                        <label>Total Income</label>
+                                        <h4 id="weekly-total-income" class="green"></h4>
+                                    </div>
+        
+                                    <div class="reports-total-expenses box mb-10 br-rounded-lg p-10">
+                                        <label>Total Expenses</label>
+                                        <h4 id="weekly-total-expenses" class="red"></h4>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <div id="monthly-report">
+                                <div class="flex jc-space-between ai-center mb-10">
+                                    <label class="title">Monthly (<span id="current-month"></span>)</label>
+                                </div>
+
+                                <div class="report-wrapper flex col gap-5 mb-20">
+                                    <div class="reports-total-income box mb-10 br-rounded-lg p-10">
+                                        <label>Total Income</label>
+                                        <h4 id="monthly-total-income" class="green"></h4>
+                                    </div>
+        
+                                    <div class="reports-total-expenses box mb-10 br-rounded-lg p-10">
+                                        <label>Total Expenses</label>
+                                        <h4 id="monthly-total-expenses" class="red"></h4>
+                                    </div>
+
+                                </div>
+                            </div>
+                            
+                        </div>
+                    
+                    </div>
+                </div>
+
+                <div id="activity" class="panel">
+
+                    <button class="prev link absolute br-rounded-full z-2" onclick="openPanel(event, 'home')">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M15 18l-6-6 6-6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+
+                    <div class="container">
+        
+                        <div class="flex col mb-10">
+                            <label class="title">Income & Expense</label>
+                        </div>
+
+                        <div class="overflow-y-scroll">
+
+                            <!-- Summary Section -->
+                            <div class="summary jc-space-between mb-10 flex gap-10">
+
+                                <div class="box w-40 br-rounded-lg p-20">
+                                    <label>Balance: </label>
+                                    <h4 id="current-balance">₱ 0.00</h4>
+                                </div>
+                                <div class="box w-40 br-rounded-lg p-20">
+                                    <label>Total Income </label>
+                                    <h4 class="green" id="total-income">₱ 0.00</h4>
+                                </div>
+                            </div>
+
+                            <div class="summary jc-space-between mb-10 flex gap-10">
+
+                                <div class="box w-40 br-rounded-lg p-20">
+                                    <label>Total Expenses: </label>
+                                    <h4 class="red" id="total-expense">₱ 0.00</h4>
+                                </div>
+                            </div>
+
+                            <div class="flex gap-10 wrap mt-20">
+
+                                <button class="btn primary p-5 flex gap-5 ai-center br-rounded-full" onclick="openPanel(event, 'reports')">
+                                    <svg 
+                                        xmlns="http://www.w3.org/2000/svg" 
+                                        viewBox="0 0 24 24" 
+                                        width="15" 
+                                        height="15" 
+                                        fill="currentColor"
+                                    >
+                                    <path d="M3 3v18h18v-2H5V3H3zm4 10h2v5H7v-5zm4-4h2v9h-2v-9zm4-4h2v13h-2V5zm4 7h2v6h-2v-6z"/>
+                                    </svg>
+                                                            
+                                    <span>Reports</span>
+                                </button>
+
+                                <button class="btn primary p-5 flex gap-5 ai-center br-rounded-full" onclick="openPanel(event, 'set-budget')">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <rect x="3" y="5" width="18" height="14" rx="2" ry="2"></rect>
+                                        <path d="M3 10h18"></path>
+                                        <path d="M12 7v6"></path>
+                                        <path d="M15 10h-6"></path>
+                                        <circle cx="18" cy="12" r="2"></circle>
+                                        <text x="50%" y="18" text-anchor="middle" font-size="10" dy=".3em">₱</text>
+                                    </svg>
+                                                            
+                                    <span>Set Budget</span>
+                                </button> 
+
+                                <button class="btn primary p-5 flex gap-5 ai-center br-rounded-full" onclick="openPanel(event, 'activity-history')">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M12 8v4l3 3"></path>
+                                        <path d="M21 12A9 9 0 1 1 12 3a9 9 0 0 1 9 9z"></path>
+                                        <polyline points="8 3 4 3 4 7"></polyline>
+                                    </svg>                          
+                                    <span>Activity History</span>
+                                </button> 
+        
+                                <button class="btn primary p-5 flex gap-5 ai-center br-rounded-full" onclick="openPanel(event, 'activity-spending-category')">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M21 12a9 9 0 1 1-9-9v9z"></path>
+                                        <path d="M12 2v10h10"></path>
+                                    </svg>                                                 
+                                    <span>Spending by Category</span>
+                                </button> 
+
+                                <button class="btn primary p-5 flex gap-5 ai-center br-rounded-full" onclick="openPanel(event, 'set-savings-goal')">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M18 9c0-4-3-7-6-7S6 5 6 9c0 1.5.5 3 1.5 4.2l-1 1.6c-.3.4-.5.8-.5 1.2v1h12v-1c0-.4-.2-.8-.5-1.2l-1-1.6C17.5 12 18 10.5 18 9z"></path>
+                                        <path d="M12 2v3"></path>
+                                        <path d="M9 6h6"></path>
+                                        <path d="M12 13v3"></path>
+                                        <circle cx="12" cy="15" r="1"></circle>
+                                        <path d="M10 20h4"></path>
+                                    </svg>                                
+                                                                                
+                                    <span>Savings Goals</span>
+                                </button> 
+
+                                
+                            </div>
+
+                            <div id="budget-progress" class="budget-progress mt-30">
+                                <div class="flex ai-center gap-10">
+                                    <label>Budget Progress for Category: </label>
+                                    <p><span id="category-name"></span></p>
+                                </div>
+                                <div class="flex ai-center gap-10">
+                                    <label>Remaining Budget: </label>
+                                    <p id="remaining-budget">₱ 0.00</p>
+                                </div>
+                                <div class="progress-container">
+                                    <div id="progress-bar" class="progress-bar"></div>
+                                </div>
+                            </div>
+
+                            <div class="flex col mt-30">
+                                <label class="title left">Add New Activity</label>
+                            </div>
+
+                            <form id="registerActivity" class="flex col mt-10">
+                                <div class="flex col mb-20">
+                                    <label>Description</label>
+                                    <input type="text" id="activity-description" placeholder="Pay Bills" required>
+                                </div>
+                                <div class="flex col mb-20">
+                                    <label>Amount ( ₱ )</label>
+                                    <input type="number" id="activity-amount" placeholder="100" required>
+                                </div>
+                                <div class="flex col mb-20">
+                                    <label>Category</label>
+                                    <select id="activity-category">
+                                        <option value="Salary">Salary</option>
+                                        <option value="Food">Food</option>
+                                        <option value="Bills">Bills</option>
+                                        <option value="Shopping">Shopping</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                </div>
+                                <div class="flex col mb-20">
+                                    <label>Type</label>
+                                    <select id="activity-type">
+                                        <option value="income">Income</option>
+                                        <option value="expense">Expense</option>
+                                    </select>
+                                </div>
+                                <div class="flex  gap-20">
+                                    <button class="btn primary w-100" type="submit">Add</button>
+                                </div>
+                            </form>
+                            
+                        </div>
+                    </div>
+                </div>
+
+                <div id="edit-activity" class="panel">
+
+                    <button class="prev link absolute br-rounded-full z-2" onclick="openPanel(event, 'activity-history')">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M15 18l-6-6 6-6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+
+                    <div class="container">
+        
+                        <div class="flex col mb-10">
+                            <label class="title">Update Activity</label>
+                        </div>
+
+                        <div class="overflow-y-scroll">
+
+                            <form id="updateActivity" class="flex col mt-10">
+                                <input type="hidden" id="update-activity-id">
+                                <div class="flex col mb-20">
+                                    <label>Description</label>
+                                    <input type="text" id="update-activity-description" placeholder="Pay Bills" required>
+                                </div>
+                                <div class="flex col mb-20">
+                                    <label>Amount ( ₱ )</label>
+                                    <input type="number" id="update-activity-amount" placeholder="100" required>
+                                </div>
+                                <div class="flex col mb-20">
+                                    <label>Category</label>
+                                    <select id="update-activity-category">
+                                        <option value="Salary">Salary</option>
+                                        <option value="Food">Food</option>
+                                        <option value="Bills">Bills</option>
+                                        <option value="Shopping">Shopping</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                </div>
+                                <div class="flex col mb-20">
+                                    <label>Type</label>
+                                    <select id="update-activity-type">
+                                        <option value="income">Income</option>
+                                        <option value="expense">Expense</option>
+                                    </select>
+                                </div>
+                                <div class="flex  gap-20">
+                                    <button class="btn primary w-100" type="submit">Update</button>
+                                </div>
+                            </form>
+                            
+                        </div>
+                    </div>
+                </div>
+
+                <div id="set-budget" class="panel">
+
+                    <button class="prev link absolute br-rounded-full z-2" onclick="openPanel(event, 'activity')">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M15 18l-6-6 6-6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+
+                    <div class="container">
+        
+                        <div class="flex col mb-10">
+                            <label class="title">Set Budget</label>
+                        </div>
+
+                        <div class="overflow-y-scroll">
+                            <form id="setBudget">
+                                <div class="flex col mb-20">
+                                    <label for="category">Category:</label>
+                                    <select id="category">
+                                        <option value="Food">Food</option>
+                                        <option value="Shopping">Shopping</option>
+                                        <option value="Bills">Bills</option>
+                                        <option value="Entertainment">Entertainment</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                </div>
+
+                                <div class="flex col mb-20">
+                                    <label>Budget Limit (₱):</label>
+                                    <input type="number" id="budget-limit" placeholder="Enter limit" required>
+                                </div>
+                                <div class="flex  gap-20">
+                                    <button class="btn primary w-100" type="submit">Set</button>
+                                </div>
+                            </form>
+
+                            <div class="flex ai-center gap-10 mt-10">
+                                <label>Total Budget: </label>
+                                <p><span id="total-budgets"></span></p>
+                            </div>
+
+                            <div class="budget-list mt-10">
+                                <div class="flex col mb-10">
+                                    <label class="title left">Current Budgets</label>
+                                </div>
+                                <ul id="budget-list" class="overflow-y-scroll"></ul>
+                            </div>
+                        </div>
+
+                        
+                    </div>
+                </div>
+
+                <div id="edit-budget" class="panel">
+
+                    <button class="prev link absolute br-rounded-full z-2" onclick="openPanel(event, 'set-budget')">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M15 18l-6-6 6-6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+
+                    <div class="container">
+        
+                        <div class="flex col mb-10">
+                            <label class="title">Update Budget</label>
+                        </div>
+
+                        <div class="overflow-y-scroll">
+                            <form id="updateBudget">
+                                <input type="hidden" id="update-budget-id">
+                                <div class="flex col mb-20">
+                                    <label for="category">Category:</label>
+                                    <select id="update-category">
+                                        <option value="Food">Food</option>
+                                        <option value="Shopping">Shopping</option>
+                                        <option value="Bills">Bills</option>
+                                        <option value="Entertainment">Entertainment</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                </div>
+
+                                <div class="flex col mb-20">
+                                    <label>Budget Limit (₱):</label>
+                                    <input type="number" id="update-budget-limit" placeholder="Enter limit" required>
+                                </div>
+                                <div class="flex  gap-20">
+                                    <button class="btn primary w-100" type="submit">Update</button>
+                                </div>
+                            </form>
+                        </div>
+
+                        
+                    </div>
+                </div>
+
+                <div id="activity-history" class="panel">
+
+                    <button class="prev link absolute br-rounded-full z-2" onclick="openPanel(event, 'activity')">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M15 18l-6-6 6-6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+
+                    <div class="container">
+        
+                        <div class="flex col mb-10">
+                            <label class="title">Activity History</label>
+                        </div>
+
+                        <div class="flex gap-10 jc-space-between mb-20">
+                            <div class="box w-40 br-rounded-lg p-20">
+                                <label>Total Income</label>
+                                <h4 id="activity-total-income" class="green"></h4>
+                            </div>
+
+                            <div class="box w-40 br-rounded-lg p-20">
+                                <label>Total Expenses</label>
+                                <h4 id="activity-total-expenses" class="red"></h4>
+                            </div>
+                        </div>
+
+                        <div class="overflow-y-scroll">
+                            <ul id="activity-list"></ul>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div id="activity-spending-category" class="panel">
+
+                    <button class="prev link absolute br-rounded-full z-2" onclick="openPanel(event, 'activity')">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M15 18l-6-6 6-6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+
+                    <div class="container">
+        
+                        <div class="flex col mb-10">
+                            <label class="title">Spending by Category</label>
+                        </div>
+
+                        <div class="overflow-y-scroll">
+                            <div id="categorized-spending"></div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div id="all-users" class="panel">
+
+                    <button class="prev link absolute br-rounded-full z-2" onclick="openPanel(event, 'home')">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M15 18l-6-6 6-6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+
+                    <div class="container">
+        
+                        <div class="flex col mb-10">
+                            <label class="title">All Users</label>
+                        </div>
+
+                        <div class="overflow-y-scroll">
+                            <div id="users-list"></div>
+                        </div>
+
+                    </div>
+                </div>
+                
+                <div id="set-savings-goal" class="panel">
+                    <button class="prev link absolute br-rounded-full z-2" onclick="openPanel(event, 'activity')">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M15 18l-6-6 6-6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                    
+                    <div class="container">
+                        <div class="flex col mb-10">
+                            <label class="title">Set Savings Goal</label>
+                        </div>
+                
+                        <div class="overflow-y-scroll">
+                            <form id="setSavingsGoal">
+                                <div class="flex col mb-20">
+                                    <label for="goal-name">Goal Name:</label>
+                                    <input type="text" id="goal-name" placeholder="Enter goal name" required>
+                                </div>
+                    
+                                <div class="flex col mb-20">
+                                    <label>Target Amount (₱):</label>
+                                    <input type="number" id="goal-amount" placeholder="Enter amount" required>
+                                </div>
+
+                                <div class="flex col mb-20">
+                                    <label for="goal-end-date">End Date (Accomplish):</label>
+                                    <input type="date" id="goal-end-date" required>
+                                </div>
+                    
+                                <div class="flex gap-20">
+                                    <button class="btn primary w-100" type="submit">Set Goal</button>
+                                </div>
+                            </form>
+
+                            <div class="savings-goals mt-30">
+                                <div class="flex col mb-10">
+                                    <label class="title left">Savings Goals</label>
+                                </div>
+                            
+                                <div id="savings-goals-list">
+                                
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div id="edit-savings-goal" class="panel">
+                    <button class="prev link absolute br-rounded-full z-2" onclick="openPanel(event, 'set-savings-goal')">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M15 18l-6-6 6-6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                    
+                    <div class="container">
+                        <div class="flex col mb-10">
+                            <label class="title">Update Savings Goal</label>
+                        </div>
+                
+                        <div class="overflow-y-scroll">
+                            <form id="supdateSavingsGoal">
+                                <input type="hidden" id="update-savings-goal-id">
+
+                                <div class="flex col mb-20">
+                                    <label for="goal-name">Goal Name:</label>
+                                    <input type="text" id="update-savings-goal-name" placeholder="Enter goal name" required>
+                                </div>
+                    
+                                <div class="flex col mb-20">
+                                    <label>Target Amount (₱):</label>
+                                    <input type="number" id="update-savings-goal-amount" placeholder="Enter amount" required>
+                                </div>
+
+                                <div class="flex col mb-20">
+                                    <label for="goal-end-date">End Date (Accomplish):</label>
+                                    <input type="date" id="update-savings-goal-end-date" required>
+                                </div>
+                    
+                                <div class="flex gap-20">
+                                    <button class="btn primary w-100" type="submit">Update Goal</button>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+        
+            </div>
+        </div>
+
+        <script src="js/index.js"></script>
+
+        <!-- Intro.js JS -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/intro.js/7.2.0/intro.min.js"></script>
+
+    </body>
+</html>

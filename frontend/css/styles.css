@@ -1,0 +1,505 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+:root {
+    --yellow: #fedf3e;
+    --red: #f80000;
+    --green: #009148;
+    --blue: #00bfff;
+    --light-blue: #c9f0fd;
+    --grey: #6b6b6b;
+    --light-grey: #cccccc;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+input,
+select,
+button {
+    box-sizing: border-box;
+}
+
+*, html, body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+}
+
+html, body {
+    height: 100%;
+}
+
+body {
+    height: 100vh;
+    overflow: hidden;
+}
+
+ul {
+    list-style: none;
+}
+
+.container {
+    padding: 0 20px;
+    margin: 0 auto;
+    height: 100%;
+}
+
+.logo {
+    width: 100px;
+    height: 100px;
+}
+
+select {
+    padding: 5px;
+}
+
+input {
+    border: 1px solid #7e7e7e;
+    border-radius: 5px;
+    padding: 5px;
+    font-size: 14px;
+    line-height: 20px;
+}
+
+input::placeholder {
+    font-size: 12px;
+}
+
+label {
+    font-size: 14px;
+    line-height: 15px;
+    margin: 5px 0;
+    font-weight: 600;
+    color: var(--grey);
+}
+
+label.title {
+    color: var(--grey);
+    font-size: 14px;
+    font-weight: 600;
+    text-align: center;
+}
+
+label.title.left {
+    text-align: left;
+}
+
+label i {
+    font-weight: normal;
+}
+
+button.btn {
+    font-size: 14px;
+    color: white;
+    font-weight: 600;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 50px;
+    border: none;
+}
+
+button.primary {
+    background-color: var(--blue);
+}
+
+button.secondary {
+    background-color: var(--light-blue);
+}
+
+button.cancel {
+    background-color: var(--red);
+}
+
+button.link {
+    font-size: 14px;
+    line-height: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+}
+
+button.prev.link {
+    background: var(--blue);
+}
+
+#navigation button.link {
+    padding: 10px 0;
+}
+
+.panel.active {
+    display: block;
+}
+
+.panel {
+    display: none;
+    animation: fadeEffect 1s;
+    height: 100%;
+}
+
+@keyframes fadeEffect {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.link.active {
+    color: var(--blue);
+    border-color: var(--blue) !important;
+}
+
+#profile .wrapper h4 {
+    font-size: 14px;
+    line-height: 20px;
+    color: var(--blue);
+}
+
+.badge {
+    padding: 3px 5px;
+    border-radius: 5px;
+    color: var(--white);
+    font-size: 10px;
+    line-height: 14px;
+    width: fit-content;
+    height: fit-content;
+}
+
+.badge.green {
+    background-color: var(--green);
+}
+
+.badge.yellow {
+    background-color: var(--yellow);
+}
+
+button.icon {
+    background-color: transparent;
+    border: transparent;
+    cursor: pointer;
+}
+
+button.icon img {
+    width: 50px;
+    height: 50px;
+}
+
+button.link.icon img {
+    width: 25px;
+    height: 25px;
+}
+
+
+#snackbar.show {
+    visibility: visible;
+    opacity: 1;
+}
+
+#snackbar {
+    width: 100%;
+    visibility: hidden;
+    min-width: 250px;
+    background-color: #fff;
+    color: var(--blue);
+    padding: 16px;
+    position: fixed;
+    z-index: 3;
+    left: 0;
+    top: 0;
+    font-size: 14px;
+    line-height: 18px;
+    opacity: 0;
+    transition: opacity 0.5s;
+    box-shadow: 0 0 10px 0 #333;
+} 
+
+.form-group-wrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.validation-msg,
+.validation-msg li {
+    font-size: 12px;
+    line-height: 15px;
+}
+
+/* Make scrollable */
+.form-group {
+    flex: 1;
+    overflow-y: auto;
+}
+
+.overflow-y-scroll {
+    overflow-y: scroll;
+    height: 100%;
+}
+
+
+/* Navigation */
+.nav-wrapper {
+    border-top: 1px solid #cecece;
+}
+
+.nav-wrapper button {
+    color: var(--grey);
+}
+
+
+.hidden {
+    display: none;
+}
+
+.rounded-nav-btn button {
+    background-color: var(--yellow);
+    border-radius: 50px;
+    border: 3px solid var(--white);
+    margin-top: -20px;
+    width: 50px;
+    height: 50px;
+    animation: bounce-twice 5s ease-in-out infinite;
+}
+
+.rounded-nav-btn button.active {
+    animation: none;
+    background-color: var(--blue);
+}
+  
+@keyframes bounce-twice {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    5% {
+      transform: translateY(-15px);
+    }
+    10% {
+      transform: translateY(0);
+    }
+    15% {
+      transform: translateY(-10px);
+    }
+    20% {
+      transform: translateY(0);
+    }
+    100% {
+      transform: translateY(0); /* Wait for the next cycle */
+    }
+}
+
+.prev {
+    left: 15px;
+    top: 25px;
+    width: 30px;
+    height: 30px;
+    background-color: var(--light-grey);
+    border: none;
+}
+
+#profile-btn {
+    right: 15px;
+    top: 0;
+    border: 2px solid var(--grey);
+    width: 30px;
+    height: 30px;
+}
+
+#activity-list li,
+#budget-list .budget,
+#savings-goals-list .goal,
+#categorized-spending .spent,
+#users-list .user {
+    padding: 10px;
+    border-bottom: 2px solid var(--white);
+}
+
+.red {
+    color: var(--red);
+}
+
+.green {
+    color: var(--green);
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: var(--grey);
+}
+
+.summary p,
+#categorized-spending p,
+#budget-list p,
+#activity-list p {
+    font-size: 14px;
+}
+
+#activity-list p .date {
+    font-size: 12px;
+}
+
+#activity-list .category {
+    font-weight: 600;
+    color: var(--grey);
+}
+
+.progress-container {
+    width: 100%;
+    height: 10px;
+    background-color: #f3f3f3;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    width: 0;
+    background-color: #4caf50; /* Green for remaining */
+}
+
+#budget-list .budget,
+#categorized-spending .spent,
+#savings-goals-list .goal,
+#activity-list li,
+#users-list .user {
+    background-color: var(--light-grey);
+}
+
+#categorized-spending .spent p {
+    color: var(--red);
+    font-weight: bold;
+}
+
+#budget-list .budget p {
+    color: var(--green);
+    font-weight: bold;
+}
+
+.toggle-password svg {
+    width: 15px;
+}
+
+.toggle-password {
+    right: 10px;
+    top: 30px;
+}
+
+#logout-btn {
+    right: 20px;
+}
+
+#profile-wrapper label {
+    margin: 0;
+    font-weight: normal;
+}
+
+/* Dark Mode */
+:root {
+    --background-light: #ffffff;
+    --text-light: #000000;
+    --background-dark: #353535;
+    --text-dark: #ffffff;
+}
+
+body {
+    background-color: var(--background-light);
+    color: var(--text-light);
+    transition: background 0.3s, color 0.3s;
+}
+
+body.dark-mode {
+    background-color: var(--background-dark);
+}
+
+body.dark-mode label, 
+body.dark-mode h1, 
+body.dark-mode h2, 
+body.dark-mode h3, 
+body.dark-mode h4, 
+body.dark-mode h5, 
+body.dark-mode h6,
+body.dark-mode p,
+body.dark-mode span,
+body.dark-mode button.link {
+    color: var(--text-dark) !important;
+}
+
+body.dark-mode #budget-list .budget,
+body.dark-mode #categorized-spending .spent,
+body.dark-mode #savings-goals-list .goal,
+body.dark-mode #activity-list li
+body.dark-mode #users-list .user {
+    background-color: var(--grey);
+}
+
+body.dark-mode #savings-goals-list .goal .btn.primary {
+    background-color: var(--light-grey);
+}
+
+.box {
+    background-color: var(--light-blue);
+}
+
+body.dark-mode .box {
+    background-color: var(--blue);
+}
+
+#dark-mode-toggle svg {
+    width: 16px;
+    height: 16px;
+}
+
+#dark-mode-toggle {
+    padding: 5px;
+    left: 20px;
+}
+
+body.tour-show::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.1);
+    z-index: 5;
+}
+
+#startTour {
+    position: relative;
+    z-index: 5;
+    top: 40%;
+    width: 100px;
+    background-color: var(--white);
+    border: none;
+    color: var(--blue);
+    padding: 10px;
+    margin: 0 auto;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.budget-action.edit,
+.activity-action.edit,
+.savings-goal-action.edit {
+    background-color: var(--green);
+    border: none;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.budget-action.delete,
+.activity-action.delete,
+.savings-goal-action.delete {
+    background-color: var(--red);
+    border: none;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.budget-action svg,
+.activity-action svg,
+.savings-goal-action svg {
+    color: var(--white);
+    cursor: pointer;
+}
